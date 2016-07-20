@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of Laravel Translator.
  *
@@ -21,12 +20,14 @@ use Illuminate\Support\Facades\Config;
  */
 trait Translatable
 {
+
     /**
      * The translations cache.
      *
      * @var array
      */
     protected $cache = [];
+    protected $defaultAttributeKey = "locale";
 
     /**
      * Get a translation.
@@ -38,7 +39,7 @@ trait Translatable
      */
     public function translate($locale = null, $fallback = true)
     {
-        $locale = $locale ?: $this->getLocale();
+        $locale = $locale ? : $this->getLocale();
 
         $translation = $this->getTranslation($locale);
 
@@ -66,8 +67,8 @@ trait Translatable
 
         if (!$translation) {
             return $this->translations()
-                ->where('locale', $locale)
-                ->firstOrNew(['locale' => $locale]);
+                    ->where(isset($this->localeAttributeKey) ? $this->localeAttributeKey : $this->defaultAttributeKey, $locale)
+                    ->firstOrNew([ isset($this->localeAttributeKey) ? $this->localeAttributeKey : $this->defaultAttributeKey => $locale]);
         }
 
         return $translation;
@@ -87,7 +88,7 @@ trait Translatable
         }
 
         $translation = $this->translations()
-            ->where('locale', $locale)
+            ->where(isset($this->localeAttributeKey) ? $this->localeAttributeKey : $this->defaultAttributeKey, $locale)
             ->first();
 
         if ($translation) {
