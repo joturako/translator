@@ -27,7 +27,10 @@ trait Translatable
      * @var array
      */
     protected $cache = [];
-    protected $defaultAttributeKey = "locale";
+    public $AttributeKey = "locale";
+    public $CodeKey = "name";
+    public $currentLocaleId = null;
+    public $fallbackLocaleId = null;
 
     /**
      * Get a translation.
@@ -67,8 +70,8 @@ trait Translatable
 
         if (!$translation) {
             return $this->translations()
-                    ->where(isset($this->localeAttributeKey) ? $this->localeAttributeKey : $this->defaultAttributeKey, $locale)
-                    ->firstOrNew([ isset($this->localeAttributeKey) ? $this->localeAttributeKey : $this->defaultAttributeKey => $locale]);
+                    ->where($this->AttributeKey, $locale)
+                    ->firstOrNew([$this->AttributeKey => $locale]);
         }
 
         return $translation;
@@ -88,7 +91,7 @@ trait Translatable
         }
 
         $translation = $this->translations()
-            ->where(isset($this->localeAttributeKey) ? $this->localeAttributeKey : $this->defaultAttributeKey, $locale)
+            ->where($this->AttributeKey, $locale)
             ->first();
 
         if ($translation) {
@@ -184,7 +187,7 @@ trait Translatable
      */
     protected function setLocale($locale)
     {
-        App::setLocale($locale);
+        $this->currentLocaleId = $locale;
     }
 
     /**
@@ -194,7 +197,15 @@ trait Translatable
      */
     protected function getLocale()
     {
-        return App::getLocale();
+        $localeInDB = \App\Models\Locale::find($this->currentLocaleId);
+        if (!$localeInDB) {
+            $localeInDB = \App\Models\Locale::first();
+            if ($localeInDB) {
+                return $localeInDB->id;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -204,7 +215,7 @@ trait Translatable
      */
     protected function getFallback()
     {
-        return Config::get('app.fallback_locale');
+        return $this->fallbackLocaleId;
     }
 
     /**
