@@ -200,11 +200,10 @@ trait Translatable
         $localeInDB = \App\Models\Locale::find($this->currentLocaleId);
         if (!$localeInDB) {
             $localeInDB = \App\Models\Locale::first();
-            if ($localeInDB) {
-                return $localeInDB->id;
-            }
         }
-
+        if ($localeInDB) {
+            return $localeInDB->id;
+        }
         return null;
     }
 
