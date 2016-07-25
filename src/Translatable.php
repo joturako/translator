@@ -199,7 +199,7 @@ trait Translatable
     protected function getLocale()
     {
 	$globalLocaleId = Config::get('app.locale_id');
-	if($globaleLocaleId){
+	if($globalLocaleId){
             $localeInDB = \App\Models\Locale::find($globalLocaleId);
 	}else{
 	    $localeInDB = \App\Models\Locale::find($this->currentLocaleId);
