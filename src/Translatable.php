@@ -187,7 +187,7 @@ trait Translatable
      */
     protected function setLocale($locale)
     {
-	Config::set('app.locale_id',$locale);
+        Config::set('app.locale_id', $locale);
         $this->currentLocaleId = $locale;
     }
 
@@ -198,12 +198,12 @@ trait Translatable
      */
     protected function getLocale()
     {
-	$globalLocaleId = Config::get('app.locale_id');
-	if($globalLocaleId){
+        $globalLocaleId = Config::get('app.locale_id');
+        if ($globalLocaleId) {
             $localeInDB = \App\Models\Locale::find($globalLocaleId);
-	}else{
-	    $localeInDB = \App\Models\Locale::find($this->currentLocaleId);
-	}
+        } else {
+            $localeInDB = \App\Models\Locale::find($this->currentLocaleId);
+        }
         if (!$localeInDB) {
             $localeInDB = \App\Models\Locale::first();
         }

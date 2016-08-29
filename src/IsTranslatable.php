@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of Laravel Translator.
  *
@@ -18,6 +17,7 @@ namespace Vinkla\Translator;
  */
 interface IsTranslatable
 {
+
     /**
      * Get the translations relation.
      *
