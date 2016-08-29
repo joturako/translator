@@ -32,6 +32,18 @@ trait Translatable
     public $currentLocaleId = null;
     public $fallbackLocaleId = null;
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saving(function($thisModel) {
+            if ($thisModel->isClean()) {
+                $thisModel->finishSave([]);
+            }
+            return true;
+        });
+    }
+
     /**
      * Get a translation.
      *
