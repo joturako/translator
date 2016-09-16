@@ -11,7 +11,7 @@
 namespace Vinkla\Translator;
 
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Session;
 
 /**
  * This is the translatable trait.
@@ -199,7 +199,7 @@ trait Translatable
      */
     protected function setLocale($locale)
     {
-        Config::set('app.locale_id', $locale);
+        Session::set('app.locale_id', $locale);
         $this->currentLocaleId = $locale;
     }
 
@@ -210,7 +210,7 @@ trait Translatable
      */
     protected function getLocale()
     {
-        $globalLocaleId = Config::get('app.locale_id');
+        $globalLocaleId = Session::get('app.locale_id');
         if ($globalLocaleId) {
             $localeInDB = \App\Models\Locale::find($globalLocaleId);
         } else {
